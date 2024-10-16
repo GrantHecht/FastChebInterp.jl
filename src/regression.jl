@@ -9,10 +9,8 @@ function _chebvandermonde(x::AbstractVector{SVector{N,Td}}, lb::SVector{N,Td}, u
     #  only affects the constant factor in the complexity.)
     c = ChebPoly{N,Td,Td}(zeros(Td, order .+ 1), lb, ub)
     A = Array{Td}(undef, length(x), length(c.coefs))
-    #A = Array{Td}(undef, length(x), prod(order .+ 1))
     for i = 1:length(c.coefs)
-    #Threads.@threads for i = 1:prod(order .+ 1)
-        #c = ChebPoly{N,Td,Td}(zeros(Td, order .+ 1), lb, ub)
+        print("$i of $(length(c.coefs))\n")
         c.coefs[i] = 1 # basis function
         Threads.@threads for j = 1:length(x)
             A[j,i] = c(x[j + (firstindex(x)-1)])
